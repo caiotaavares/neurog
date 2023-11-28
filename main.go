@@ -130,6 +130,8 @@ func trainAndTest(trainFileName, testFileName string, hiddenNeurons, numEpochs i
 
 	binarizedPredictions := binarizePredictions(predictions)
 	fmt.Println("binarized Predictions\n", mat.Formatted(binarizedPredictions, mat.Squeeze()))
+
+	comparePredictions(binarizedPredictions, testLabels)
 }
 
 // Função para transformar as predições em uma matriz binária
@@ -543,4 +545,43 @@ func ShowWeightsAndBiases(weights, biases *mat.Dense) {
 	fmt.Println(mat.Formatted(weights, mat.Squeeze()))
 	fmt.Println("Vieses:")
 	fmt.Println(mat.Formatted(biases, mat.Squeeze()))
+}
+
+// Função para comparar previsões binarizadas com rótulos de teste e criar uma matriz 5x5
+func comparePredictions(binarizedPredictions, testLabels *mat.Dense) *mat.Dense {
+	rows, _ := binarizedPredictions.Dims()
+
+	// Matriz para armazenar os índices onde o valor é 1 nas previsões binarizadas
+	indexMatrix := mat.NewDense(5, 5, nil)
+
+	for i := 0; i < rows; i++ {
+		// Encontre o índice onde o valor é 1 nas previsões binarizadas
+		_, predictedIdx := findMaxIndex(binarizedPredictions.RowView(i))
+
+		// Encontre o índice onde o valor é 1 nos rótulos de teste
+		_, trueIdx := findMaxIndex(testLabels.RowView(i))
+
+		// Incrementa em 1 na matriz zero onde a linha é predictedIdx e a coluna é trueIdx
+		currentValue := indexMatrix.At(predictedIdx, trueIdx)
+		indexMatrix.Set(predictedIdx, trueIdx, currentValue+1)
+	}
+
+	// Salvar a matriz resultante em um arquivo
+	saveResultToFile(indexMatrix)
+
+	return indexMatrix
+}
+
+// Função para salvar a matriz resultante em um arquivo
+func saveResultToFile(matrix *mat.Dense) {
+	file, err := os.Create("resultado.txt")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer file.Close()
+
+	// Use mat.Format para formatar a matriz ao escrever no arquivo
+	fmt.Fprintln(file, "Matriz Gerada:")
+	fmt.Fprintln(file, mat.Formatted(matrix, mat.Squeeze()))
 }

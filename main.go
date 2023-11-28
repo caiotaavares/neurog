@@ -33,19 +33,19 @@ func main() {
 
 	// Criar entradas
 	entryTrain := widget.NewEntry()
-	entryTrain.SetPlaceHolder("teste.csv")
+	entryTrain.SetText("teste.csv")
 
 	entryTest := widget.NewEntry()
-	entryTest.SetPlaceHolder("treinamento.csv")
+	entryTest.SetText("treinamento.csv")
 
 	entryLR := widget.NewEntry()
-	entryLR.SetPlaceHolder("0.3")
+	entryLR.SetText("0.3")
 
 	entryEpochs := widget.NewEntry()
-	entryEpochs.SetPlaceHolder("5000")
+	entryEpochs.SetText("5000")
 
 	entryHiddenNeurons := widget.NewEntry()
-	entryHiddenNeurons.SetPlaceHolder("25")
+	entryHiddenNeurons.SetText("25")
 
 	// Criar layout para organizar os elementos
 	form := container.NewVBox(

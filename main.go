@@ -129,7 +129,7 @@ func trainAndTest(trainFileName, testFileName string, hiddenNeurons, numEpochs i
 	}
 
 	binarizedPredictions := binarizePredictions(predictions)
-	fmt.Println("binarized Predictions\n", mat.Formatted(binarizedPredictions, mat.Squeeze()))
+	// fmt.Println("binarized Predictions\n", mat.Formatted(binarizedPredictions, mat.Squeeze()))
 
 	comparePredictions(binarizedPredictions, testLabels)
 }
@@ -251,10 +251,10 @@ func (nn *neuralNet) train(inputs, labels *mat.Dense) error {
 		}
 	}
 
-	fmt.Println("weightInputHidden\n", mat.Formatted(weightInputHidden, mat.Squeeze()))
-	fmt.Println("biasInputHidden\n", mat.Formatted(biasInputHidden, mat.Squeeze()))
-	fmt.Println("weightHiddenOut\n", mat.Formatted(weightHiddenOut, mat.Squeeze()))
-	fmt.Println("biasHiddenOut\n", mat.Formatted(biasHiddenOut, mat.Squeeze()))
+	// fmt.Println("weightInputHidden\n", mat.Formatted(weightInputHidden, mat.Squeeze()))
+	// fmt.Println("biasInputHidden\n", mat.Formatted(biasInputHidden, mat.Squeeze()))
+	// fmt.Println("weightHiddenOut\n", mat.Formatted(weightHiddenOut, mat.Squeeze()))
+	// fmt.Println("biasHiddenOut\n", mat.Formatted(biasHiddenOut, mat.Squeeze()))
 
 	// Saída da rede neural
 	output := new(mat.Dense)
@@ -370,8 +370,8 @@ func (nn *neuralNet) backPropagate(inputs,
 		biasInputHidden.Add(biasInputHidden, biasHiddenAdj)
 
 	}
-	fmt.Println(output.Dims())
-	fmt.Println("output\n", mat.Formatted(output, mat.Squeeze()))
+	// fmt.Println(output.Dims())
+	// fmt.Println("output\n", mat.Formatted(output, mat.Squeeze()))
 
 	return nil
 }
@@ -502,49 +502,6 @@ func makeInputsAndLabels(fileName string) (*mat.Dense, *mat.Dense) {
 	inputs := mat.NewDense(len(rawCSVData), 6, inputsData)
 	labels := mat.NewDense(len(rawCSVData), 1, labelsData)
 	return inputs, labels
-}
-
-// Informações
-// ShowModelInfo exibe informações sobre a rede neural após o treinamento.
-func ShowModelInfo(network *neuralNet) {
-	colorReset := "\033[0m"
-	colorYellow := "\033[33m"
-
-	fmt.Println(string(colorYellow))
-	fmt.Println("Informações da Rede Neural APÓS O TREINAMENTO:")
-	fmt.Printf("Arquitetura da Rede: %d -> %d -> %d\n", network.config.inputNeurons, network.config.hiddenNeurons, network.config.outputNeurons)
-	fmt.Printf("Número de Épocas de Treinamento: %d\n", network.config.numEpochs)
-	fmt.Printf("Taxa de Aprendizado: %f\n", network.config.learningRate)
-	fmt.Println("Pesos e Vieses da Camada Oculta:")
-	ShowWeightsAndBiases(network.weightHidden, network.biasHidden)
-	fmt.Println("Pesos e Vieses da Camada de Saída:")
-	ShowWeightsAndBiases(network.weightOut, network.biasOut)
-	fmt.Println(string(colorReset))
-}
-
-// ShowPredictedInfo exibe informações sobre a rede neural após a função predict().
-func ShowPredictedInfo(network *neuralNet, predictions *mat.Dense) {
-	colorReset := "\033[0m"
-	colorGreen := "\033[32m"
-
-	fmt.Println(string(colorGreen))
-	fmt.Println("Informações da Rede Neural APÓS O Predict():")
-	fmt.Printf("Arquitetura da Rede: %d -> %d -> %d\n", network.config.inputNeurons, network.config.hiddenNeurons, network.config.outputNeurons)
-	fmt.Printf("Número de Épocas de Treinamento: %d\n", network.config.numEpochs)
-	fmt.Printf("Taxa de Aprendizado: %f\n", network.config.learningRate)
-	fmt.Println("Pesos e Vieses da Camada Oculta:")
-	ShowWeightsAndBiases(network.weightHidden, network.biasHidden)
-	fmt.Println("Pesos e Vieses da Camada de Saída:")
-	ShowWeightsAndBiases(network.weightOut, network.biasOut)
-	fmt.Println(string(colorReset))
-}
-
-// ShowWeightsAndBiases exibe os pesos e vieses de uma camada da rede neural.
-func ShowWeightsAndBiases(weights, biases *mat.Dense) {
-	fmt.Println("Pesos:")
-	fmt.Println(mat.Formatted(weights, mat.Squeeze()))
-	fmt.Println("Vieses:")
-	fmt.Println(mat.Formatted(biases, mat.Squeeze()))
 }
 
 // Função para comparar previsões binarizadas com rótulos de teste e criar uma matriz 5x5
